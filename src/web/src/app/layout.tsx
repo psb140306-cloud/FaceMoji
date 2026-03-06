@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   },
   description: "셀카 1장으로 24개 이모티콘 세트를 자동 생성. OGQ 마켓 규격으로 즉시 판매 가능.",
   keywords: ["이모티콘", "AI", "셀카", "OGQ", "스티커", "이모지", "FaceMoji"],
+  metadataBase: new URL("https://facemoji-psi.vercel.app"),
   openGraph: {
     title: "FaceMoji - 셀카로 나만의 이모티콘 만들기",
     description: "셀카 1장으로 24개 이모티콘 세트를 자동 생성. OGQ 마켓 규격으로 즉시 판매 가능.",
@@ -46,6 +47,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>{children}</Providers>
         <Analytics />

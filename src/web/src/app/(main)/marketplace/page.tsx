@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Store, TrendingUp, Clock, Loader2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 interface ListingItem {
@@ -84,12 +85,13 @@ function MarketplaceContent() {
 
       {/* 필터 */}
       <div className="mb-6 flex flex-wrap items-center gap-4">
-        <div className="flex gap-2 overflow-x-auto">
+        <div role="group" aria-label="카테고리 필터" className="flex gap-2 overflow-x-auto">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.key}
               onClick={() => updateFilter("category", cat.key)}
-              className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm transition-colors ${
+              aria-pressed={category === cat.key}
+              className={`min-h-[44px] whitespace-nowrap rounded-full px-4 py-2 text-sm transition-colors ${
                 category === cat.key
                   ? "bg-primary text-primary-foreground"
                   : "bg-muted hover:bg-muted/80"
@@ -99,10 +101,11 @@ function MarketplaceContent() {
             </button>
           ))}
         </div>
-        <div className="ml-auto flex gap-2">
+        <div role="group" aria-label="정렬" className="ml-auto flex gap-2">
           <button
             onClick={() => updateFilter("sort", "latest")}
-            className={`flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm ${
+            aria-pressed={sort === "latest"}
+            className={`flex min-h-[44px] items-center gap-1 rounded-lg px-3 py-2 text-sm ${
               sort === "latest" ? "bg-muted font-medium" : "hover:bg-muted/50"
             }`}
           >
@@ -111,7 +114,8 @@ function MarketplaceContent() {
           </button>
           <button
             onClick={() => updateFilter("sort", "popular")}
-            className={`flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm ${
+            aria-pressed={sort === "popular"}
+            className={`flex min-h-[44px] items-center gap-1 rounded-lg px-3 py-2 text-sm ${
               sort === "popular" ? "bg-muted font-medium" : "hover:bg-muted/50"
             }`}
           >
@@ -142,15 +146,17 @@ function MarketplaceContent() {
               href={`/marketplace/${listing.id}`}
               className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
             >
-              <div className="aspect-square bg-muted">
+              <div className="relative aspect-square bg-muted">
                 {listing.thumbnail_url ? (
-                  <img
+                  <Image
                     src={listing.thumbnail_url}
                     alt={listing.title}
-                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="object-cover transition-transform group-hover:scale-105"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center text-4xl">
+                  <div className="flex h-full items-center justify-center text-4xl" aria-hidden="true">
                     <span>&#x1F600;</span>
                   </div>
                 )}
@@ -178,19 +184,21 @@ function MarketplaceContent() {
 
       {/* 페이지네이션 */}
       {totalPages > 1 && (
-        <div className="mt-8 flex justify-center gap-2">
+        <nav aria-label="페이지 탐색" className="mt-8 flex justify-center gap-2">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
             <button
               key={p}
               onClick={() => setPage(p)}
-              className={`h-8 w-8 rounded-lg text-sm ${
+              aria-label={`${p}페이지`}
+              aria-current={p === page ? "page" : undefined}
+              className={`h-10 w-10 rounded-lg text-sm ${
                 p === page ? "bg-primary text-primary-foreground" : "bg-muted hover:bg-muted/80"
               }`}
             >
               {p}
             </button>
           ))}
-        </div>
+        </nav>
       )}
     </div>
   );

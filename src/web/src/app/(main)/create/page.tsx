@@ -11,9 +11,9 @@ const STEPS = [{ label: "사진 업로드" }, { label: "스타일 선택" }, { l
 
 export default function CreatePage() {
   const router = useRouter();
-  const { uploadedImage, pipaConsented } = useCreateStore();
+  const { uploadedImage, pipaConsented, pipaTransferConsented } = useCreateStore();
 
-  const canProceed = uploadedImage && pipaConsented;
+  const canProceed = uploadedImage && pipaConsented && pipaTransferConsented;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">

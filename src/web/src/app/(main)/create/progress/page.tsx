@@ -28,6 +28,15 @@ export default function ProgressPage() {
     }
   }, [uploadedImage, selectedStyle, router]);
 
+  // 생성 진행 중 이탈 방지
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, []);
+
   // 시뮬레이션 (실제 API 연결 전)
   useEffect(() => {
     const interval = setInterval(() => {
@@ -80,7 +89,7 @@ export default function ProgressPage() {
         </div>
 
         {/* 미니 그리드 */}
-        <div className="grid grid-cols-8 gap-1.5">
+        <div className="grid grid-cols-6 gap-1.5 md:grid-cols-8">
           {EXPRESSIONS.map((expr, i) => (
             <div
               key={expr.key}

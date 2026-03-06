@@ -10,12 +10,14 @@ interface CreateStore {
   selectedStyle: StyleType | null;
   generationId: string | null;
   pipaConsented: boolean;
+  pipaTransferConsented: boolean;
 
   setStep: (step: Step) => void;
   setUploadedImage: (file: File, url: string) => void;
   setSelectedStyle: (style: StyleType) => void;
   setGenerationId: (id: string) => void;
   setPipaConsented: (consented: boolean) => void;
+  setPipaTransferConsented: (consented: boolean) => void;
   reset: () => void;
 }
 
@@ -26,6 +28,7 @@ const initialState = {
   selectedStyle: null,
   generationId: null,
   pipaConsented: false,
+  pipaTransferConsented: false,
 };
 
 export const useCreateStore = create<CreateStore>((set) => ({
@@ -35,5 +38,6 @@ export const useCreateStore = create<CreateStore>((set) => ({
   setSelectedStyle: (style) => set({ selectedStyle: style }),
   setGenerationId: (id) => set({ generationId: id }),
   setPipaConsented: (consented) => set({ pipaConsented: consented }),
+  setPipaTransferConsented: (consented) => set({ pipaTransferConsented: consented }),
   reset: () => set(initialState),
 }));

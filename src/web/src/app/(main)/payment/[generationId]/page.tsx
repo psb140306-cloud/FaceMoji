@@ -103,10 +103,11 @@ export default function PaymentPage() {
   }
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-8">
+    <div className="mx-auto max-w-4xl px-4 py-8">
       <div className="mb-6">
         <button
           onClick={() => router.back()}
+          aria-label="이전 페이지로"
           className="flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="mr-1 h-4 w-4" />
@@ -119,50 +120,57 @@ export default function PaymentPage() {
         결제 완료 후 고해상도 이모티콘 파일을 다운로드할 수 있어요.
       </p>
 
-      {/* 주문 요약 */}
-      {orderInfo && (
-        <div className="mb-6 rounded-xl border bg-muted/30 p-4">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">상품</span>
-            <span className="font-medium">{orderInfo.orderName}</span>
-          </div>
-          <div className="mt-2 flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">구성</span>
-            <span className="font-medium">24개 이모티콘 세트</span>
-          </div>
-          <div className="mt-3 border-t pt-3">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold">결제 금액</span>
-              <span className="text-xl font-bold text-primary">
-                {orderInfo.amount.toLocaleString()}원
-              </span>
+      <div className="flex flex-col gap-8 lg:flex-row">
+        {/* 좌: 주문 요약 */}
+        <div className="lg:w-[360px] lg:shrink-0">
+          {orderInfo && (
+            <div className="rounded-xl border bg-muted/30 p-4 lg:sticky lg:top-20">
+              <h2 className="mb-3 text-sm font-bold">주문 요약</h2>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">상품</span>
+                <span className="font-medium">{orderInfo.orderName}</span>
+              </div>
+              <div className="mt-2 flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">구성</span>
+                <span className="font-medium">24개 이모티콘 세트</span>
+              </div>
+              <div className="mt-3 border-t pt-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold">결제 금액</span>
+                  <span className="text-xl font-bold text-primary">
+                    {orderInfo.amount.toLocaleString()}원
+                  </span>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      )}
 
-      {loading && (
-        <div className="flex items-center justify-center py-16">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        {/* 우: 결제 위젯 */}
+        <div className="min-w-0 flex-1">
+          {loading && (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            </div>
+          )}
+
+          <div id="payment-method" className="mb-4" />
+          <div id="payment-agreement" className="mb-6" />
+
+          {!loading && (
+            <>
+              <Button size="lg" className="w-full text-base font-semibold" onClick={handlePayment}>
+                {orderInfo?.amount.toLocaleString()}원 결제하기
+              </Button>
+
+              <div className="mt-4 flex items-center justify-center gap-1 text-xs text-muted-foreground">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                <span>토스페이먼츠 안전결제</span>
+              </div>
+            </>
+          )}
         </div>
-      )}
-
-      {/* Toss Payment Widget */}
-      <div id="payment-method" className="mb-4" />
-      <div id="payment-agreement" className="mb-6" />
-
-      {!loading && (
-        <>
-          <Button size="lg" className="w-full text-base font-semibold" onClick={handlePayment}>
-            {orderInfo?.amount.toLocaleString()}원 결제하기
-          </Button>
-
-          <div className="mt-4 flex items-center justify-center gap-1 text-xs text-muted-foreground">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            <span>토스페이먼츠 안전결제</span>
-          </div>
-        </>
-      )}
+      </div>
     </div>
   );
 }
