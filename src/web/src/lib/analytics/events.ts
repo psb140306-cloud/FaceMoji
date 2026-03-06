@@ -27,7 +27,9 @@ interface EventProperties {
 export function trackEvent(name: EventName, properties?: EventProperties) {
   // Vercel Analytics custom events
   if (typeof window !== "undefined" && "va" in window) {
-    (window as unknown as Record<string, unknown>).va?.("event", { name, ...properties });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const va = (window as any).va;
+    if (typeof va === "function") va("event", { name, ...properties });
   }
 
   // 내부 이벤트 로그 (Supabase에 저장)
