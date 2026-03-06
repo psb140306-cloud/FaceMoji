@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,7 +28,7 @@ const CATEGORIES = [
   { key: "office", label: "직장인" },
 ];
 
-export default function MarketplacePage() {
+function MarketplaceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [listings, setListings] = useState<ListingItem[]>([]);
@@ -193,5 +193,19 @@ export default function MarketplacePage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function MarketplacePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-[50vh] items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      }
+    >
+      <MarketplaceContent />
+    </Suspense>
   );
 }
